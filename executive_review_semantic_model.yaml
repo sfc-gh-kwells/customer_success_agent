@@ -1,0 +1,625 @@
+name: executive_review_analytics
+description: >
+  Semantic model for executive business review analytics including customer conversions, 
+  multi-touch attributions, industry benchmarks, and historical engagement metrics. 
+  This model enables customer success representatives to prepare data-driven insights 
+  for executive business reviews covering past performance, industry comparisons, 
+  optimization opportunities, and channel analysis.
+
+tables:
+  - name: conversions
+    description: >
+      Customer conversion events across all channels and campaigns. Tracks conversion types 
+      (purchases, sign-ups, subscriptions, upgrades) with associated revenue values. 
+      Use this table for analyzing conversion performance by channel, campaign, region, and industry.
+    base_table:
+      database: CUSTOMER_SUCCESS_DATA
+      schema: ANALYTICS
+      table: CONVERSIONS
+    
+    primary_key:
+      columns:
+        - conversion_id
+    
+    dimensions:
+      - name: customer_id
+        synonyms:
+          - "customer identifier"
+          - "client id"
+        description: Unique identifier for each customer
+        expr: customer_id
+        data_type: VARCHAR
+        unique: false
+      
+      - name: channel
+        synonyms:
+          - "marketing channel"
+          - "communication channel"
+        description: Channel through which the conversion occurred
+        expr: channel
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Email
+          - Push
+          - In-App
+          - SMS
+          - Web
+      
+      - name: campaign_name
+        synonyms:
+          - "campaign"
+          - "marketing campaign"
+        description: Name of the campaign associated with the conversion
+        expr: campaign_name
+        data_type: VARCHAR
+        unique: false
+      
+      - name: conversion_type
+        synonyms:
+          - "type of conversion"
+          - "conversion category"
+        description: Type of conversion event
+        expr: conversion_type
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Purchase
+          - Sign-up
+          - Subscription
+          - Upgrade
+      
+      - name: region
+        synonyms:
+          - "geographic region"
+          - "market region"
+        description: Geographic region where the conversion occurred
+        expr: region
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - North America
+          - Europe
+          - Asia Pacific
+          - Latin America
+      
+      - name: industry_vertical
+        synonyms:
+          - "industry"
+          - "vertical"
+          - "sector"
+        description: Industry vertical of the customer
+        expr: industry_vertical
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Retail
+          - Financial Services
+          - Healthcare
+          - Technology
+          - Media & Entertainment
+    
+    time_dimensions:
+      - name: conversion_date
+        synonyms:
+          - "date of conversion"
+          - "conversion time"
+        description: Date when the conversion occurred (UTC timezone)
+        expr: conversion_date
+        data_type: DATE
+        unique: false
+    
+    facts:
+      - name: conversion_value
+        synonyms:
+          - "revenue"
+          - "conversion revenue"
+          - "value"
+        description: Monetary value associated with the conversion in USD
+        expr: conversion_value
+        data_type: NUMBER
+    
+    metrics:
+      - name: total_conversion_value
+        synonyms:
+          - "total revenue"
+          - "total conversion revenue"
+        description: Sum of all conversion values
+        expr: SUM(conversion_value)
+      
+      - name: average_conversion_value
+        synonyms:
+          - "average revenue"
+          - "avg conversion value"
+        description: Average value per conversion
+        expr: AVG(conversion_value)
+      
+      - name: conversion_count
+        synonyms:
+          - "number of conversions"
+          - "total conversions"
+        description: Total number of conversion events
+        expr: COUNT(*)
+
+  - name: attributions
+    description: >
+      Multi-touch attribution data showing customer touchpoints across the journey. 
+      Tracks attribution weights and attributed revenue for different touchpoint models 
+      (first touch, last touch, linear, time decay). Use for understanding channel 
+      contribution and multi-touch attribution analysis.
+    base_table:
+      database: CUSTOMER_SUCCESS_DATA
+      schema: ANALYTICS
+      table: ATTRIBUTIONS
+    
+    primary_key:
+      columns:
+        - attribution_id
+    
+    dimensions:
+      - name: customer_id
+        synonyms:
+          - "customer identifier"
+          - "client id"
+        description: Unique identifier for each customer
+        expr: customer_id
+        data_type: VARCHAR
+        unique: false
+      
+      - name: channel
+        synonyms:
+          - "attribution channel"
+          - "touchpoint channel"
+        description: Channel of the customer touchpoint
+        expr: channel
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Email
+          - Push
+          - In-App
+          - SMS
+          - Web
+      
+      - name: touchpoint_type
+        synonyms:
+          - "attribution model"
+          - "attribution type"
+        description: Type of attribution model applied to this touchpoint
+        expr: touchpoint_type
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - First Touch
+          - Last Touch
+          - Linear
+          - Time Decay
+      
+      - name: campaign_name
+        synonyms:
+          - "campaign"
+          - "marketing campaign"
+        description: Name of the campaign for this touchpoint
+        expr: campaign_name
+        data_type: VARCHAR
+        unique: false
+      
+      - name: region
+        synonyms:
+          - "geographic region"
+          - "market region"
+        description: Geographic region of the touchpoint
+        expr: region
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - North America
+          - Europe
+          - Asia Pacific
+          - Latin America
+    
+    time_dimensions:
+      - name: touchpoint_date
+        synonyms:
+          - "date of touchpoint"
+          - "interaction date"
+        description: Date when the touchpoint occurred (UTC timezone)
+        expr: touchpoint_date
+        data_type: DATE
+        unique: false
+    
+    facts:
+      - name: attribution_weight
+        synonyms:
+          - "weight"
+          - "attribution percentage"
+        description: Attribution weight assigned to this touchpoint (0 to 1)
+        expr: attribution_weight
+        data_type: NUMBER
+      
+      - name: attributed_revenue
+        synonyms:
+          - "revenue"
+          - "attributed value"
+        description: Revenue attributed to this touchpoint in USD
+        expr: attributed_revenue
+        data_type: NUMBER
+    
+    metrics:
+      - name: total_attributed_revenue
+        synonyms:
+          - "total attribution revenue"
+          - "sum of attributed revenue"
+        description: Sum of all attributed revenue
+        expr: SUM(attributed_revenue)
+      
+      - name: average_attribution_weight
+        synonyms:
+          - "avg weight"
+          - "average attribution"
+        description: Average attribution weight across touchpoints
+        expr: AVG(attribution_weight)
+      
+      - name: touchpoint_count
+        synonyms:
+          - "number of touchpoints"
+          - "total touchpoints"
+        description: Total number of customer touchpoints
+        expr: COUNT(*)
+
+  - name: industry_benchmarks
+    description: >
+      Industry benchmark data and KPIs across different verticals. Contains percentile 
+      rankings and comparative metrics for evaluating performance against industry standards. 
+      Use for competitive analysis and identifying performance gaps.
+    base_table:
+      database: CUSTOMER_SUCCESS_DATA
+      schema: ANALYTICS
+      table: INDUSTRY_BENCHMARKS
+    
+    primary_key:
+      columns:
+        - benchmark_id
+    
+    dimensions:
+      - name: industry_vertical
+        synonyms:
+          - "industry"
+          - "vertical"
+          - "sector"
+        description: Industry vertical for the benchmark
+        expr: industry_vertical
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Retail
+          - Financial Services
+          - Healthcare
+          - Technology
+          - Media & Entertainment
+      
+      - name: metric_name
+        synonyms:
+          - "benchmark metric"
+          - "kpi name"
+        description: Name of the benchmark metric
+        expr: metric_name
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Average Conversion Rate
+          - Customer Engagement Score
+          - Email Open Rate
+          - Click-Through Rate
+          - Customer Lifetime Value
+          - Churn Rate
+          - Average Order Value
+          - Monthly Active Users Growth
+      
+      - name: percentile_rank
+        synonyms:
+          - "percentile"
+          - "ranking"
+        description: Percentile ranking for the benchmark value
+        expr: percentile_rank
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Top 10%
+          - Top 25%
+          - Median
+          - Bottom 25%
+          - Bottom 10%
+      
+      - name: data_source
+        synonyms:
+          - "source"
+          - "benchmark source"
+        description: Source of the benchmark data
+        expr: data_source
+        data_type: VARCHAR
+        unique: false
+    
+    time_dimensions:
+      - name: benchmark_period
+        synonyms:
+          - "benchmark date"
+          - "period"
+        description: Time period for the benchmark measurement
+        expr: benchmark_period
+        data_type: DATE
+        unique: false
+    
+    facts:
+      - name: metric_value
+        synonyms:
+          - "benchmark value"
+          - "value"
+        description: Numeric value of the benchmark metric
+        expr: metric_value
+        data_type: NUMBER
+    
+    metrics:
+      - name: average_benchmark_value
+        synonyms:
+          - "avg benchmark"
+          - "mean benchmark value"
+        description: Average benchmark value across records
+        expr: AVG(metric_value)
+      
+      - name: benchmark_count
+        synonyms:
+          - "number of benchmarks"
+          - "total benchmarks"
+        description: Total number of benchmark records
+        expr: COUNT(*)
+
+  - name: historical_engagement
+    description: >
+      Historical customer engagement metrics tracking message delivery, open rates, 
+      and click-through rates across all channels. Includes engagement scores and 
+      channel performance data. Use for analyzing engagement trends, channel effectiveness, 
+      and customer behavior patterns over time.
+    base_table:
+      database: CUSTOMER_SUCCESS_DATA
+      schema: ANALYTICS
+      table: HISTORICAL_ENGAGEMENT
+    
+    primary_key:
+      columns:
+        - engagement_id
+    
+    dimensions:
+      - name: customer_id
+        synonyms:
+          - "customer identifier"
+          - "client id"
+        description: Unique identifier for each customer
+        expr: customer_id
+        data_type: VARCHAR
+        unique: false
+      
+      - name: channel
+        synonyms:
+          - "engagement channel"
+          - "communication channel"
+        description: Channel through which engagement occurred
+        expr: channel
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Email
+          - Push
+          - In-App
+          - SMS
+          - Web
+      
+      - name: engagement_type
+        synonyms:
+          - "type of engagement"
+          - "engagement category"
+        description: Type of engagement activity
+        expr: engagement_type
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Newsletter
+          - Promotional
+          - Transactional
+          - Onboarding
+          - Re-engagement
+      
+      - name: region
+        synonyms:
+          - "geographic region"
+          - "market region"
+        description: Geographic region of the engagement
+        expr: region
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - North America
+          - Europe
+          - Asia Pacific
+          - Latin America
+      
+      - name: industry_vertical
+        synonyms:
+          - "industry"
+          - "vertical"
+          - "sector"
+        description: Industry vertical of the customer
+        expr: industry_vertical
+        data_type: VARCHAR
+        unique: false
+        sample_values:
+          - Retail
+          - Financial Services
+          - Healthcare
+          - Technology
+          - Media & Entertainment
+    
+    time_dimensions:
+      - name: engagement_date
+        synonyms:
+          - "date of engagement"
+          - "engagement time"
+        description: Date when the engagement occurred (UTC timezone)
+        expr: engagement_date
+        data_type: DATE
+        unique: false
+    
+    facts:
+      - name: engagement_score
+        synonyms:
+          - "score"
+          - "engagement rating"
+        description: Calculated engagement score from 1-100
+        expr: engagement_score
+        data_type: NUMBER
+      
+      - name: messages_sent
+        synonyms:
+          - "sent count"
+          - "total messages sent"
+        description: Number of messages sent to customers
+        expr: messages_sent
+        data_type: NUMBER
+      
+      - name: messages_opened
+        synonyms:
+          - "opened count"
+          - "total messages opened"
+        description: Number of messages opened by customers
+        expr: messages_opened
+        data_type: NUMBER
+      
+      - name: messages_clicked
+        synonyms:
+          - "clicked count"
+          - "total messages clicked"
+        description: Number of messages clicked by customers
+        expr: messages_clicked
+        data_type: NUMBER
+    
+    metrics:
+      - name: total_messages_sent
+        synonyms:
+          - "sum of messages sent"
+          - "total sent"
+        description: Sum of all messages sent
+        expr: SUM(messages_sent)
+      
+      - name: total_messages_opened
+        synonyms:
+          - "sum of messages opened"
+          - "total opened"
+        description: Sum of all messages opened
+        expr: SUM(messages_opened)
+      
+      - name: total_messages_clicked
+        synonyms:
+          - "sum of messages clicked"
+          - "total clicked"
+        description: Sum of all messages clicked
+        expr: SUM(messages_clicked)
+      
+      - name: average_engagement_score
+        synonyms:
+          - "avg engagement score"
+          - "mean engagement"
+        description: Average engagement score across all records
+        expr: AVG(engagement_score)
+      
+      - name: open_rate
+        synonyms:
+          - "message open rate"
+          - "email open rate"
+        description: Percentage of messages opened out of messages sent
+        expr: (SUM(messages_opened)::FLOAT / NULLIF(SUM(messages_sent), 0)) * 100
+      
+      - name: click_through_rate
+        synonyms:
+          - "ctr"
+          - "click rate"
+        description: Percentage of messages clicked out of messages opened
+        expr: (SUM(messages_clicked)::FLOAT / NULLIF(SUM(messages_opened), 0)) * 100
+      
+      - name: engagement_count
+        synonyms:
+          - "number of engagements"
+          - "total engagements"
+        description: Total number of engagement records
+        expr: COUNT(*)
+
+verified_queries:
+  - name: year_over_year_revenue_comparison
+    question: What is the total conversion revenue this year compared to last year?
+    verified_at: 1732032000
+    verified_by: System
+    use_as_onboarding_question: true
+    sql: |
+      WITH this_year AS (
+        SELECT SUM(conversion_value) AS revenue
+        FROM CUSTOMER_SUCCESS_DATA.ANALYTICS.CONVERSIONS
+        WHERE YEAR(conversion_date) = YEAR(CURRENT_DATE())
+      ),
+      last_year AS (
+        SELECT SUM(conversion_value) AS revenue
+        FROM CUSTOMER_SUCCESS_DATA.ANALYTICS.CONVERSIONS
+        WHERE YEAR(conversion_date) = YEAR(CURRENT_DATE()) - 1
+      )
+      SELECT 
+        this_year.revenue AS this_year_revenue,
+        last_year.revenue AS last_year_revenue,
+        ((this_year.revenue - last_year.revenue) / last_year.revenue * 100) AS yoy_growth_pct
+      FROM this_year, last_year;
+  
+  - name: channel_performance_analysis
+    question: What are the top performing channels by conversion revenue in the last 12 months?
+    verified_at: 1732032000
+    verified_by: System
+    use_as_onboarding_question: true
+    sql: |
+      SELECT 
+        channel,
+        COUNT(*) AS conversion_count,
+        SUM(conversion_value) AS total_revenue,
+        AVG(conversion_value) AS avg_conversion_value
+      FROM CUSTOMER_SUCCESS_DATA.ANALYTICS.CONVERSIONS
+      WHERE conversion_date >= DATEADD(month, -12, CURRENT_DATE())
+      GROUP BY channel
+      ORDER BY total_revenue DESC;
+  
+  - name: engagement_metrics_by_region
+    question: What are the engagement metrics by region for the past 12 months?
+    verified_at: 1732032000
+    verified_by: System
+    use_as_onboarding_question: true
+    sql: |
+      SELECT 
+        region,
+        COUNT(*) AS engagement_count,
+        AVG(engagement_score) AS avg_engagement_score,
+        (SUM(messages_opened)::FLOAT / NULLIF(SUM(messages_sent), 0) * 100) AS open_rate,
+        (SUM(messages_clicked)::FLOAT / NULLIF(SUM(messages_opened), 0) * 100) AS click_through_rate
+      FROM CUSTOMER_SUCCESS_DATA.ANALYTICS.HISTORICAL_ENGAGEMENT
+      WHERE engagement_date >= DATEADD(month, -12, CURRENT_DATE())
+      GROUP BY region
+      ORDER BY avg_engagement_score DESC;
+  
+  - name: industry_benchmark_comparison
+    question: How do our key metrics compare to industry benchmarks?
+    verified_at: 1732032000
+    verified_by: System
+    sql: |
+      SELECT 
+        industry_vertical,
+        metric_name,
+        AVG(metric_value) AS avg_benchmark_value,
+        MAX(CASE WHEN percentile_rank = 'Top 10%' THEN metric_value END) AS top_10_pct,
+        MAX(CASE WHEN percentile_rank = 'Median' THEN metric_value END) AS median
+      FROM CUSTOMER_SUCCESS_DATA.ANALYTICS.INDUSTRY_BENCHMARKS
+      WHERE benchmark_period >= DATEADD(month, -12, CURRENT_DATE())
+      GROUP BY industry_vertical, metric_name
+      ORDER BY industry_vertical, metric_name;
