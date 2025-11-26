@@ -1,0 +1,112 @@
+[
+  {
+    "question_number": 1,
+    "question": "Show me all conversions for CUST_12345 in the last 30 days broken down by channel",
+    "expected_answer": "No conversions found - customer likely has no recent activity or data is outside 30-day window",
+    "actual_answer": "No conversions were found for customer CUST_12345 in the last 30 days. The query executed successfully but returned no results.",
+    "tool_used": "executive_review_data (Cortex Analyst)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q01_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 2,
+    "question": "What's the total attributed revenue for CUST_23456 in November 2025?",
+    "expected_answer": "No attributed revenue data found - customer may not exist or has no touchpoints in November 2025",
+    "actual_answer": "No attributed revenue data for customer CUST_23456 in November 2025. Could mean: customer doesn't exist, no touchpoints that generated revenue, or data not processed yet.",
+    "tool_used": "executive_review_data (Cortex Analyst)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q02_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 3,
+    "question": "Compare CUST_34567's engagement score against industry benchmarks",
+    "expected_answer": "Customer not found in engagement database, but agent should provide industry benchmark context",
+    "actual_answer": "Customer CUST_34567 not found in engagement database. Agent provided comprehensive industry benchmark context: Financial Services (59.8 top 25%, 37.4 median), Technology (82.0 top 25%, 36.3 median), Media (48.5-58.8), Healthcare (45.0-51.0). Also provided relevant success stories and recommendations.",
+    "tool_used": "executive_review_data (Cortex Analyst) + cortex_search (case studies)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q03_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 4,
+    "question": "Which channels have the highest conversion rates for Technology industry customers?",
+    "expected_answer": "Top 5 channels ranked by average conversion value for Technology industry",
+    "actual_answer": "Top channels for Technology: 1) In-App ($2,648 avg, 201 conversions), 2) Push ($2,612 avg, 208 conversions), 3) Email ($2,576 avg, 202 conversions), 4) Web ($2,517 avg, 183 conversions), 5) SMS ($2,429 avg, 182 conversions)",
+    "tool_used": "executive_review_data (Cortex Analyst)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q04_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 5,
+    "question": "Find case studies about email marketing optimization",
+    "expected_answer": "Relevant case studies from Media & Entertainment showing email marketing best practices",
+    "actual_answer": "Found multiple case studies: StreamNow Media (cross-channel email + predictive analytics), AudioHub Network (email newsletters + push notifications with Liquid personalization), NewsHub Digital (interactive campaigns with personalized content), SoundWave Music (ML-powered email optimization). Identified 5 key strategies: predictive analytics, cross-channel integration, dynamic personalization, behavioral triggers, interactive elements.",
+    "tool_used": "cortex_search (case studies)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q05_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 6,
+    "question": "Show me success stories for retail companies",
+    "expected_answer": "Case studies may not have retail-specific examples, agent should adapt media/entertainment examples or acknowledge gap",
+    "actual_answer": "Agent acknowledged that case study database is focused on media/entertainment, not traditional retail. However, provided transferable insights from 5 media companies (StreamNow, NewsHub, SoundWave, WatchNext, PixelForge) with strategies applicable to retail: cross-channel personalization, conversion optimization via surveys, predictive analytics, dynamic recommendations, early intervention strategies.",
+    "tool_used": "cortex_search (case studies)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q06_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 7,
+    "question": "What are best practices for improving engagement scores?",
+    "expected_answer": "Combination of current engagement data + case study best practices",
+    "actual_answer": "Provided current baseline: Latin America (50.4), Europe (50.3), North America (49.3), Asia Pacific (47.6). Then 5 best practices: 1) Cross-channel messaging, 2) Predictive analytics & real-time adaptation, 3) Behavioral-based personalization, 4) Interactive feedback loops, 5) Automated workflow optimization. Plus regional focus areas and key success metrics.",
+    "tool_used": "executive_review_data (Cortex Analyst) + cortex_search (case studies)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q07_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 8,
+    "question": "What were the top 3 performing channels for CUST_45678 last quarter, and show me relevant case studies",
+    "expected_answer": "Customer-specific channel data + relevant case studies (multi-tool query)",
+    "actual_answer": "Customer CUST_45678 had no conversion activity last quarter. Agent provided overall top 3 channels instead: 1) In-App ($349,136 revenue), 2) Email ($348,691), 3) SMS ($321,432). Then provided 3 relevant case studies (StreamNow cross-channel, AudioHub email+push, SoundWave ML conversion) and recommendations for re-engaging CUST_45678.",
+    "tool_used": "executive_review_data (Cortex Analyst) + cortex_search (case studies)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q08_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 9,
+    "question": "Analyze CUST_67890's conversion trends and recommend strategies based on similar patterns",
+    "expected_answer": "Conversion trend analysis + recommendations with case study backing",
+    "actual_answer": "Customer CUST_67890 has no conversion activity. Agent provided 4 strategic recommendations based on similar patterns: 1) Predictive customer activation with ML models, 2) Cross-channel engagement campaign, 3) Interactive research & personalization with surveys, 4) Early warning system implementation. Plus 4 immediate action items.",
+    "tool_used": "executive_review_data (Cortex Analyst) + cortex_search (case studies)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q09_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 10,
+    "question": "What data exists for CUST_99999?",
+    "expected_answer": "No data - customer does not exist (edge case test)",
+    "actual_answer": "No data exists for CUST_99999 across all three tables (conversions, historical engagement, attribution). Agent confirmed the CUST_ prefix format is correct but this specific ID doesn't exist. Provided possible explanations.",
+    "tool_used": "executive_review_data (Cortex Analyst)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q10_response.json",
+    "success": true,
+    "issue": null
+  },
+  {
+    "question_number": 11,
+    "question": "Show me conversions from January 2030",
+    "expected_answer": "No data - future date, agent should recognize and suggest alternatives",
+    "actual_answer": "No results because January 2030 is in the future (current date: November 26, 2025). Database only contains historical data. Agent suggested alternatives: January 2025, January 2024, or a different time period.",
+    "tool_used": "executive_review_data (Cortex Analyst)",
+    "response_file": "SNOWFLAKE_INTELLIGENCE_AGENTS_EXECUTIVE_REVIEW_ASSISTANT/versions/v20251126-1225/evals/q11_response.json",
+    "success": true,
+    "issue": null
+  }
+]
